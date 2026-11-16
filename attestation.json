@@ -1,9 +1,9 @@
 {
   "pluginId": "neodex.monodle",
   "repo": "NDesumeur/neodex-plugin-monodle",
-  "version": "1.4.0",
-  "sha256": "8fcdbaadbdaabbdb5aa0232f8260a58be96a4faced90399da2fb8d672bea0586",
-  "approvedAt": "2026-11-16T04:14:37.294Z",
+  "version": "1.4.1",
+  "sha256": "9e2a5b6156a2a58e84f164e898360b20eb7de6cdc2dc4c1dc272d32333ee9064",
+  "approvedAt": "2026-11-16T16:38:49.672Z",
   "neobase": ">=4.0.0",
-  "signature": "M4pUIY3sphopmuoxCckKavfBD2iWLqAuS13jFRavBbVDF18fvi7k35agRkr1jTwaqFWv4gpdAZlAGlryVeL4BA=="
+  "signature": "mEuvnzimFHMssjEc/n4AXCuQgBS8lSDEJ358xmCwk+GIBs9ybOPWIEFYva9IyseDU2QGalTNnpIpnu0dnrYxDQ=="
 }
