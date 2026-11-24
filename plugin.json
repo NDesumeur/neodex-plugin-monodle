@@ -1,9 +1,9 @@
 {
   "id": "neodex.monodle",
   "name": "MonogatariDle",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "author": "NDesumeur",
-  "description": "Jeu de devinettes de la série Monogatari : trouve le personnage mystère en tapant des noms. En mode Classique, chaque essai compare genre, nature, rôle et d'autres colonnes (vert : pareil, orange : proche) ; les modes Indices, Emoji et Image dévoilent un indice de plus à chaque essai raté. Un défi par jour et par mode, le même pour tous, des parties libres et ta série gardée. Version 1.4.0 : bandeau illustré en pixel art (le torii d'un sanctuaire au crépuscule, sous une grande lune, avec les portraits des personnages principaux), textes et zone de saisie plus grands, cases du tableau assez larges pour leur texte.",
+  "description": "Jeu de devinettes de la série Monogatari : trouve le personnage mystère en tapant des noms. En mode Classique, chaque essai compare genre, nature, rôle et d'autres colonnes (vert : pareil, orange : proche) ; les modes Indices, Emoji, Image, Ombre et Flou dévoilent un indice de plus à chaque essai raté. Un défi par jour et par mode, le même pour tous, des parties libres et ta série gardée. Version 1.4.0 : bandeau illustré en pixel art (le torii d'un sanctuaire au crépuscule, sous une grande lune, avec les portraits des personnages principaux), textes et zone de saisie plus grands, cases du tableau assez larges pour leur texte.",
   "icon": "icon.png",
   "entry": "index.js",
   "view": "monodle",
