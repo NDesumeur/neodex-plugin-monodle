@@ -102,6 +102,9 @@ export default async function (ctx) {
   const saveGames = () => { clearTimeout(gamesTimer); gamesTimer = setTimeout(() => { gamesTimer = null; folder.write('games', games).catch(() => {}); }, 500); };
   const best = (k, v, higher = true) => { const b = games.best[k]; if (b == null || (higher ? v > b : v < b)) { games.best[k] = v; saveGames(); return true; } return false; };
   const gstore = (k, init) => (games[k] ??= init);  // la section d'un jeu
+  // les trophées de NeoDex (3.4.8 et plus) : succès et records déclarés dans plugin.json ; sur un NeoDex plus ancien, rien ne se passe
+  const trophy = id => { ctx.games?.unlock(id).catch(() => {}); };
+  const trophyRecord = (id, v) => { if (v != null && Number.isFinite(+v)) ctx.games?.record(id, +v).catch(() => {}); };
 function gameLoop(st, appKey, update, draw) {
   cancelAnimationFrame(st.raf);
   const STEP = 1000 / 60; let acc = 0, last = performance.now();
@@ -173,7 +176,8 @@ function dleState(g, mode, daily) {  // the game being played: today's challenge
 }
 function dleRecord(g, mode, daily, won, tries) {
   const st = (dleSave(g).stats[mode] ||= {played: 0, wins: 0, streak: 0, bestStreak: 0, tries: 0, lastDay: ''});
-  st.played++; if (won) { st.wins++; st.tries += tries; }
+  st.played++; if (won) { st.wins++; st.tries += tries; if (tries === 1) st.one = 1; }
+  setTimeout(dleTrophies);
   if (daily) {
     const y = new Date(); y.setDate(y.getDate() - 1);
     st.streak = won ? (st.lastDay === dleDay(y) ? st.streak + 1 : 1) : 0; st.bestStreak = Math.max(st.bestStreak, st.streak); st.lastDay = dleDay();
@@ -473,5 +477,13 @@ dleRegister({key: 'monodle', name: 'MonogatariDle', series: 'Monogatari', dir: '
   {n: "Shide no Tori",jp: "死出の鳥",t: 3,g: "?",sp: ["Oddité"],ro: ["Oddité"],ha: [],a: null,f: 2,od: ["Phénix"],va: "—",em: "🐦🥚♾️",h: ["C'est une oddité.","C'est un coucou.","Elle pond dans le ventre d'une femme enceinte.","On la confond avec un phénix.","C'est l'oddité de « Tsukihi Phoenix »."],img: "shide-no-tori.webp"},
   ]});  // (non indenté : les textes sur plusieurs lignes restent exactement les tiens)
   // ---- fin ----
-  ctx.onOpen(() => { dleOpen('monodle'); });
+  // les trophées, tirés des statistiques et des records gardés (aussi à l'ouverture : ce qui a été fait avant compte)
+  function dleTrophies() {
+    const s = Object.values(dleSave(DLES['monodle']).stats), w = s.reduce((a, x) => a + (x.wins || 0), 0), ser = Math.max(0, ...s.map(x => x.bestStreak || 0));
+    const modes = DLES['monodle'].ui?.modes?.querySelectorAll('[data-m]').length || 0, won = Object.entries(dleSave(DLES['monodle']).stats).filter(([, x]) => x.wins > 0).length;
+    trophyRecord('trouves', w || null); trophyRecord('serie', ser || null);
+    if (w >= 1) trophy('premier'); if (dleSave(DLES['monodle']).stats.classic?.wins >= 10) trophy('classique10'); if (w >= 50) trophy('cinquante'); if (w >= 100) trophy('cent');
+    if (won >= 3) trophy('modes3'); if (modes && won >= modes) trophy('modes'); if (ser >= 7) trophy('serie7'); if (ser >= 30) trophy('serie30'); if (s.some(x => x.one)) trophy('un');
+  }
+  ctx.onOpen(() => { dleOpen('monodle'); dleTrophies(); });
 }
